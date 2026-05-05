@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity Grocery (Blinkit Style)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+    
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo" style="display: flex; align-items: baseline;">
+                <h1>Zero-G Grocery</h1>
+                <span style="font-size: 0.85rem; margin-left: 10px; font-weight: 600; color: var(--accent-color);">Hi, {{ username }}!</span>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for 'milk', 'bread', etc...">
+            </div>
+            <div class="controls">
+                <div class="budget-control">
+                    <label for="budget">Cart Budget:</label>
+                    <input type="number" id="budget" value="20.00" step="0.5">
+                </div>
+                <a href="/logout" class="btn secondary-btn" style="padding: 8px 15px; font-size: 0.9rem; text-decoration: none;">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="blinkit-layout">
+        <!-- Categories Sidebar -->
+        <aside class="sidebar-left glass-panel">
+            <h3>Categories</h3>
+            <ul id="category-list">
+                <!-- Categories injected by JS -->
+            </ul>
+        </aside>
+
+        <!-- Products Area -->
+        <section class="products-center">
+            <h2 id="current-category-title">All Products</h2>
+            <div id="products-grid" class="grid">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+
+        <!-- Cart and Suggestions Sidebar -->
+        <aside class="sidebar-right">
+            <section class="cart-section glass-panel floating-slow">
+                <div class="cart-header">
+                    <h2>My Cart</h2>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span id="cart-item-count">0 items</span>
+                        <button class="btn secondary-btn" style="padding: 4px 8px; font-size: 0.8rem;" onclick="clearCart()">Clear</button>
+                    </div>
+                </div>
+                <div class="cart-items-container">
+                    <ul id="cart-list">
+                        <li class="empty-msg">Your cart is empty</li>
+                    </ul>
+                </div>
+                <div class="cart-footer">
+                    <div id="budget-warning" class="warning-msg" style="display: none;">⚠️ Cart Budget Exceeded!</div>
+                    <div class="cart-total">Total: $<span id="total-price">0.00</span></div>
+                    <button id="checkoutBtn" class="btn primary-btn btn-block">Checkout</button>
+                </div>
+            </section>
+
+            <section class="recommendation-section glass-panel floating-fast">
+                <h2>Often Bought Together</h2>
+                <div class="optimizer-info">Smart suggestions based on your cart</div>
+                <ul id="recs-list">
+                    <li class="empty-msg">Add items to see magic</li>
+                </ul>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Address Modal -->
+    <div id="addressModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-panel">
+            <h2>Delivery Address</h2>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="address-name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="address-phone" placeholder="123-456-7890" required>
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <textarea id="address-details" rows="3" placeholder="123 Antigravity Lane..." required></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn secondary-btn" onclick="closeModal('addressModal')">Cancel</button>
+                <button class="btn primary-btn" onclick="proceedToPayment()">Proceed to Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-panel">
+            <h2>Select Payment Method</h2>
+            <div class="payment-options">
+                <div class="payment-card selected" onclick="selectPayment(this, 'card')">
+                    <div class="icon">💳</div>
+                    <div>Credit / Debit Card</div>
+                </div>
+                <div class="payment-card" onclick="selectPayment(this, 'upi')">
+                    <div class="icon">📱</div>
+                    <div>UPI / Wallet</div>
+                </div>
+                <div class="payment-card" onclick="selectPayment(this, 'cod')">
+                    <div class="icon">💵</div>
+                    <div>Cash on Delivery</div>
+                </div>
+            </div>
+            <div class="modal-actions mt-20">
+                <button class="btn secondary-btn" onclick="closeModal('paymentModal')">Back</button>
+                <button class="btn primary-btn btn-block" onclick="finalCheckout()">Pay $<span id="final-pay-amount">0.00</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
