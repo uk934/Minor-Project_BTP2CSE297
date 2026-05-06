@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antigravity Grocery (Blinkit Style)</title>
+    <title>Zero G Grocery</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -12,9 +13,10 @@
     
     <header class="top-nav">
         <div class="nav-container">
-            <div class="logo" style="display: flex; align-items: baseline;">
-                <h1>Zero-G Grocery</h1>
-                <span style="font-size: 0.85rem; margin-left: 10px; font-weight: 600; color: var(--accent-color);">Hi, {{ username }}!</span>
+            <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Zero-G Grocery Logo" style="height: 32px; width: 32px; border-radius: 8px;">
+                <h1 style="margin: 0;">Zero-G Grocery</h1>
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--accent-color);">Hi, {{ username }}!</span>
             </div>
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Search for 'milk', 'bread', etc...">
